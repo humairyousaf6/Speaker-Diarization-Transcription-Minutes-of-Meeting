@@ -66,17 +66,19 @@ AI Meeting Minutes
 
 ## Screenshots
 
-### Home Page
+<h2>Screenshots</h2>
 
-![Home](screenshots/home.png)
+<h3>Speaker Diarization</h3>
 
-### Generated Transcript
+<img src="Screenshots/diarization-ss.jpeg" width="900">
 
-![Transcript](screenshots/transcript.png)
+<h3>Transcription</h3>
 
-### AI Meeting Minutes
+<img src="Screenshots/transcription-ss.jpeg" width="900">
 
-![Minutes](screenshots/minutes.png)
+<h3>AI Meeting Minutes</h3>
+
+<img src="Screenshots/minutes-ss.jpeg" width="900">
 
 ---
 
