@@ -1,202 +1,116 @@
-# Speaker Diarization + Transcription POC
+# 🎙️ Speaker Diarization, Transcription & AI Meeting Minutes
 
-This project is a proof of concept for speaker-attributed transcription using:
+An AI-powered application that performs **speaker diarization**, **speech transcription**, and **AI-generated meeting minutes** from uploaded audio recordings.
 
-- pyannote `community-1` for speaker diarization
-- local `openai-whisper` for transcription
-- FastAPI for the backend
-- Next.js for the frontend
+The system identifies individual speakers, generates speaker-attributed transcripts, merges consecutive speaker segments for improved readability, and can produce concise AI meeting minutes from the reviewed transcript.
 
-The app accepts an uploaded audio file, detects speaker turns, generates transcript segments, maps each transcript segment to the speaker with the greatest timestamp overlap, produces merged same-speaker transcript blocks for easier reading, and can generate AI meeting minutes from the saved reviewed transcript.
+> **Note**
+>
+> This repository contains **only the frontend showcase** of the project.
+> The backend implementation, AI pipelines, automation workflows, and business logic are proprietary and are intentionally omitted for confidentiality.
 
-## Output Shape
+---
 
-The backend returns:
+## Features
 
-- `turns`
-- `transcript_segments`
-- `merged_transcript_segments`
-- `minutes`
-- `transcription`
+- 🎤 Speaker Diarization
+- 📝 Speech-to-Text Transcription
+- 👥 Speaker Attribution
+- 📄 Merged Speaker Transcripts
+- 🤖 AI Meeting Minutes
+- 📂 Audio Upload Interface
+- ⚡ Fast & Responsive UI
 
-Example response shape:
+---
 
-```json
-{
-  "turns": [
-    { "start": 0.96, "end": 5.11, "speaker": "SPEAKER_02" }
-  ],
-  "transcript_segments": [
-    {
-      "start": 0.0,
-      "end": 5.0,
-      "speaker": "SPEAKER_02",
-      "text": "Paul is the Human Resources Manager at Quartz Power Group."
-    }
-  ],
-  "merged_transcript_segments": [
-    {
-      "start": 0.0,
-      "end": 10.0,
-      "speaker": "SPEAKER_02",
-      "text": "Paul is the Human Resources Manager at Quartz Power Group. He has called a meeting with some of his colleagues to discuss a new training program."
-    }
-  ],
-  "minutes": null,
-  "transcription": {
-    "provider": "openai-whisper",
-    "model": "base"
-  }
-}
-```
+## Tech Stack
 
-## Stack
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
 
-- Backend: FastAPI, local pyannote `community-1` diarization, `openai-whisper`, OpenAI SDK for minutes
-- Frontend: Next.js App Router, React, Tailwind CSS
-- Tests: `pytest`, Jest, React Testing Library
+### Backend *(Private)*
+- FastAPI
+- Pyannote Community-1
+- OpenAI Whisper
+- OpenAI API
+- Hugging Face
+- Python
 
-## Important Environment Notes
+---
 
-- Diarization runs through the `community-1` model in the current project flow.
-- Transcription runs locally through the free Python Whisper library.
-- The diarization model is downloaded from Hugging Face once and then reused locally from `backend/.cache/huggingface`.
-- The backend keeps Whisper model downloads inside `backend/.cache/whisper`.
-- Keep your Hugging Face token out of source code. Set `HF_TOKEN` through `backend/.env`.
-- AI meeting minutes are optional and generated on demand from the saved transcript session.
-- This v1 uses segment-level timestamp alignment. It does not fully solve simultaneous overlapping-speech separation into two independent transcripts.
-
-## Third-Party Attribution
-
-This project uses the `pyannote/speaker-diarization-community-1` model for speaker diarization. That model is subject to its own third-party license terms under `CC-BY-4.0`.
-
-- Canonical license URL: https://creativecommons.org/licenses/by/4.0/
-- Attribution details: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
-
-## Backend Setup
-
-```powershell
-cd C:\Users\Sameed\Desktop\Speaker_Diarization
-.\.venv\Scripts\Activate.ps1
-python -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r backend\requirements.txt
-```
-
-Configuration:
+## Project Workflow
 
 ```text
-backend/.env.example
+Audio Upload
+      │
+      ▼
+Speaker Diarization
+      │
+      ▼
+Speech Transcription
+      │
+      ▼
+Speaker Attribution
+      │
+      ▼
+Merged Transcript
+      │
+      ▼
+AI Meeting Minutes
 ```
 
-Copy it to:
+---
 
-```text
-backend/.env
-```
+## Screenshots
 
-Then add:
+### Home Page
 
-```text
-HF_TOKEN=your_hugging_face_token_here
-OPENAI_API_KEY=your_openai_key_here
-```
+![Home](screenshots/home.png)
 
-Run the backend:
+### Generated Transcript
 
-```powershell
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
-```
+![Transcript](screenshots/transcript.png)
 
-Health check:
+### AI Meeting Minutes
 
-```powershell
-python -c "import requests; r=requests.get('http://127.0.0.1:8000/health'); print(r.status_code, r.text)"
-```
+![Minutes](screenshots/minutes.png)
 
-## Frontend Setup
+---
 
-```powershell
-cd C:\Users\Sameed\Desktop\Speaker_Diarization\frontend
-npm.cmd install
-npm.cmd run dev
-```
+## Repository Contents
 
-Open:
+This repository includes:
 
-```text
-http://localhost:3000
-```
+- Frontend application
+- Project documentation
+- UI implementation
+- Project screenshots
 
-## UI Behavior
+The following components are **not included**:
 
-The frontend shows four result views:
+- Backend source code
+- AI models
+- FastAPI services
+- Environment variables
+- API keys
+- Business logic
+- Internal workflows
 
-- `Transcript`
-- `Merged transcript`
-- `Raw turns`
-- `AI minutes`
+---
 
-`Transcript` is the default view.
+## Disclaimer
 
-Transcript sessions are saved under:
+This project was developed as a personal/professional AI application.
 
-```text
-backend/data/transcripts/{session_id}.json
-```
+The backend implementation is private and has been excluded from this repository to protect proprietary code and confidential implementation details.
 
-If a reviewer edits transcript text, any previously generated minutes are cleared so regenerated minutes always use the latest saved transcript.
+---
 
-## Real Sample Test
+## Author
 
-Provided sample file used for validation:
+**Muhammad Humair**
 
-```text
-Test_Audio\Business English_ Participating in meetings 2-[AudioTrimmer.com]-[AudioTrimmer.com].mp3.mpeg
-```
-
-Direct combined validation:
-
-```powershell
-cd C:\Users\Sameed\Desktop\Speaker_Diarization
-.\.venv\Scripts\Activate.ps1
-python -c "import os, json; from backend.diarize import run_diarization; from backend.transcribe import run_transcription; from backend.attribution import build_attributed_transcript_segments, merge_consecutive_same_speaker_segments; p=r'Test_Audio\Business English_ Participating in meetings 2-[AudioTrimmer.com]-[AudioTrimmer.com].mp3.mpeg'; turns=run_diarization(p, token=os.environ['HF_TOKEN'], num_speakers=4); transcript=run_transcription(p); attributed=build_attributed_transcript_segments(transcript, turns); merged=merge_consecutive_same_speaker_segments(attributed); print('TURNS', len(turns)); print('TRANSCRIPT', len(transcript)); print('ATTRIBUTED', len(attributed)); print('MERGED', len(merged)); print('SPEAKERS', sorted({segment['speaker'] for segment in attributed})); print(json.dumps(merged[:4], indent=2))"
-```
-
-Validated result on the provided sample:
-
-- `TURNS 20`
-- `TRANSCRIPT 24`
-- `ATTRIBUTED 24`
-- `MERGED 11`
-- `SPEAKERS ['SPEAKER_00', 'SPEAKER_01', 'SPEAKER_02', 'SPEAKER_03']`
-
-## Tests
-
-Backend:
-
-```powershell
-cd C:\Users\Sameed\Desktop\Speaker_Diarization
-.\.venv\Scripts\Activate.ps1
-python -m pytest backend\tests -v
-```
-
-Frontend:
-
-```powershell
-cd C:\Users\Sameed\Desktop\Speaker_Diarization\frontend
-npm.cmd test
-npm.cmd run build
-```
-
-## What Was Verified
-
-- Backend automated tests passed: `19/19`
-- Frontend automated tests passed: `6/6`
-- Frontend production build passed
-- Whisper transcription completed on the provided sample audio
-- local `community-1` diarization completed on the provided sample audio
-- Speaker attribution and merged transcript generation completed on the provided sample audio
-- FastAPI route logic returned diarization + transcript outputs in-process with a real uploaded file
-
-## Known Limitation
-
-This implementation maps one transcript segment to one speaker using maximum-overlap timestamp alignment. That works well for normal turn-taking speech, but it is still an approximation for interruptions and true overlapping simultaneous speech.
+AI/ML & Automation Engineer
