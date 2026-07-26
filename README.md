@@ -70,15 +70,15 @@ AI Meeting Minutes
 
 <h3>Speaker Diarization</h3>
 
-<img src="Screenshots/diarization-ss.jpeg" width="900">
+<img src="Screenshots/diarization-ss.jpg" width="900">
 
 <h3>Transcription</h3>
 
-<img src="Screenshots/transcription-ss.jpeg" width="900">
+<img src="Screenshots/transcription-ss.jpg" width="900">
 
 <h3>AI Meeting Minutes</h3>
 
-<img src="Screenshots/minutes-ss.jpeg" width="900">
+<img src="Screenshots/minutes-ss.jpg" width="900">
 
 ---
 
