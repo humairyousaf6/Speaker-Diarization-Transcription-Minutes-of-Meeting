@@ -1,0 +1,24 @@
+
+> speaker-diarization-frontend@0.1.0 dev
+> next dev -p 3000
+
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:3000
+   - Network:      http://172.28.64.1:3000
+
+ ✓ Starting...
+ ✓ Ready in 4.2s
+ ○ Compiling / ...
+ ✓ Compiled / in 10.6s (543 modules)
+ GET / 200 in 167ms
+ GET / 200 in 151ms
+ GET / 200 in 1342ms
+ GET / 200 in 549ms
+ ○ Compiling /api/analyze ...
+ ✓ Compiled /api/analyze in 3.9s (563 modules)
+ ✓ Compiled in 1879ms (232 modules)
+ GET / 200 in 2334ms
+ GET / 200 in 120ms
+ POST /api/analyze 500 in 42150ms
+ GET / 200 in 3087ms
+ GET / 200 in 1487ms
